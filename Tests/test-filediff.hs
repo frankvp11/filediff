@@ -715,6 +715,21 @@ testSameListConcatenatedWithIntermediate = do
 
     diff @?= F.ListDiff {F.dels = [], F.adds = [(3, '*'), (4,'a'),(5,'b'),(6,'c')]}
 
+customCase = do 
+    let base = "abcdef"
+    let comp = "wabxyze"
+    let diff = F.diffLists base comp
+    let applied = F.applyListDiff diff base
+
+    -- print the diffs
+    print diff
+    print applied
+
+    -- check if the applied diff is equal to the comp
+
+
+
+
 tests :: TestTree
 tests = testGroup "unit tests"
     [ -- diffing
@@ -858,7 +873,13 @@ tests = testGroup "unit tests"
     , testCase
         "Testing application failure for directory diffs (case 2)"
         (runTest testDirectoryDiffApplyFailureAdditionCase)
+    , testCase
+        "Custom case"
+        customCase
+        
+
     ]
 
+    -- run the custom case
 main :: IO ()
 main = defaultMain tests
