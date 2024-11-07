@@ -37,7 +37,7 @@ import Control.Applicative
 data ListDiff a = ListDiff
     { dels :: [(Int, a)]
     , adds :: [(Int, a)] }
-    deriving (Show, Eq, Generic)
+    deriving (Show, Read, Eq, Generic)
 
 instance Default (ListDiff a) where
     def :: ListDiff a
