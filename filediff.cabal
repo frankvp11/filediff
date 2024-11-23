@@ -20,8 +20,8 @@ source-repository head
     location: git://github.com/frankvp11/filediff.git
 
 library
-  exposed-modules: Filediff, Filediff.Types, Filediff.Stats, Filediff.Printing
-  other-modules:   Filediff.Utils
+  exposed-modules: Filediff, Filediff.Types
+  -- other-modules:   Filediff.Utils
   -- other-extensions:
   build-depends:       base >= 4.7 && < 5, mtl, time, directory, either, transformers, data-memocombinators, Zora >=1.1.22, text, data-default,  tasty, tasty-hunit, rainbow, bytestring, threads, hashmap, transformers-either
   hs-source-dirs:      src
