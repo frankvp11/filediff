@@ -10,7 +10,7 @@ module Filediff
 ) where
 
 import Debug.Trace
-import qualified Data.HashMap as HMap
+import qualified Data.HashMap.Strict as HMap  -- Updated import
 
 import Control.Concurrent (forkIO)
 import Control.Concurrent.Thread as Thread (Result(..), result)
@@ -190,13 +190,13 @@ longestCommonSubsequence :: forall a. (Eq a) => [a] -> [a] -> [a]
 longestCommonSubsequence xs ys = longestCommonSubsequence' 0 0
     where
         -- TODO: UArray?
-        xs' :: HMap.Map Int a
+        xs' :: HMap.HashMap Int a  -- Changed from HMap.Map to HMap.HashMap
         xs' = foldl update HMap.empty (zip [0..] xs)
 
-        ys' :: HMap.Map Int a
+        ys' :: HMap.HashMap Int a  -- Changed from HMap.Map to HMap.HashMap
         ys' = foldl update HMap.empty (zip [0..] ys)
 
-        update :: HMap.Map Int a -> (Int, a) -> HMap.Map Int a
+        update :: HMap.HashMap Int a -> (Int, a) -> HMap.HashMap Int a  -- Changed from HMap.Map to HMap.HashMap
         update hmap (i, a) = HMap.insert i a hmap
 
         xsLength :: Int
@@ -217,10 +217,10 @@ longestCommonSubsequence xs ys = longestCommonSubsequence' 0 0
             | otherwise = caseY
             where
                 x :: a
-                x = xs' HMap.! i
+                x = HMap.lookupDefault (error "Index out of bounds") i xs'  -- Safely lookup with default
 
                 y :: a
-                y = ys' HMap.! j
+                y = HMap.lookupDefault (error "Index out of bounds") j ys'  -- Safely lookup with default
 
                 caseX :: [a]
                 caseX = longestCommonSubsequence' (i + 1) j
@@ -241,13 +241,3 @@ subsequenceIndices sub@(a:sub') super@(b:super') =
     if a == b
         then 0 : map succ (subsequenceIndices sub' super')
         else     map succ (subsequenceIndices sub super')
-
-
--- | When `sub` is a (not necessarily contiguous) subsequence of `super`,
---   get the indices at which elements of `sub` do *not* appear. E.g.
---
---       > nonSubsequenceIndices "abe" "abcdefg"
---       > [2,3,5,6]
--- nonSubsequenceIndices :: (Eq a) => [a] -> [a] -> [Int]
--- nonSubsequenceIndices sub super =
---     [0..(length super - 1)] \\ (subsequenceIndices sub super)
