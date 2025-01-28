@@ -1,6 +1,7 @@
 {-# LANGUAGE InstanceSigs #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE BangPatterns #-}
 
 -- | Data types used by `Filediff`
 module Filediff.Types
@@ -29,10 +30,10 @@ import Control.Applicative
 --   at which to delete, and `adds` represents the indices and
 --   contents to add.
 data ListDiff a = ListDiff
-    { dels :: [Int]
-    , adds :: [(Int, a)] }
+    { dels :: ![Int]
+    , adds :: ![(Int, a)] }
     deriving (Show, Read, Eq, Generic)
-
+  
 instance Default (ListDiff a) where
     def :: ListDiff a
     def = ListDiff [] []
